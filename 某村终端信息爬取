@@ -1,0 +1,33 @@
+library(xml2)
+library(rvest)
+library(dplyr)
+library(xlsx)
+myHttpheader <- c(
+    "User-Agent"="Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) ",
+    "Accept"="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language"="en-us",
+    "Connection"="keep-alive",
+    "Accept-Charset"="GB2312,utf-8;q=0.7,*;q=0.7"
+  )
+getdata<-function(page,urlwithoutpage){
+  url=paste0(urlwithoutpage,page) 
+  Web <- read_html(Url,encoding="GBK",httpheader=myHttpheader)
+  价格<- Web%>%html_nodes("b.price-type")%>%html_text()%>%iconv("utf-8","gbk")
+  型号 <- Web%>%
+    html_nodes("h3 a")%>%
+    html_text()%>%
+    iconv("utf-8","gbk")
+  评分 <- Web%>%
+    html_nodes("span.score")%>%
+    html_text()%>%
+    iconv("utf-8","gbk")
+
+  data.frame(价格,评分,型号)
+  }
+url<-"http://detail.zol.com.cn/cell_phone_index/subcate57_0_list_1_0_1_2_0_"
+final<-data.frame()
+for (i in 1:1){
+  final<-rbind(final,getdata(i,url))        
+} 
+write.xlsx(x =final, file = "zhongguancun4-14.xlsx",
+sheetName = "TestSheet", row.names = FALSE)
