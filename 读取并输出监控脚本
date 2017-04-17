@@ -1,0 +1,55 @@
+library(data.table)
+library(reshape2)
+library(plyr)
+library(ggplot2)
+library(RColorBrewer)
+t <- Sys.time() #提取本地时间
+t1<-as.numeric(format(t, "%Y%m%d")) #转化成数值
+rx<- (t1-20170407)*4 + 6688
+rx0 <- (t1-20170408)*4 + 6688
+day1 <-paste("D:","/",t1,"/",rx,"_4G业务(计划任务)_",t1,"_0100.csv",collapse="s",sep="")
+day2 <-paste("D:","/",y1,"/",rx0,"_4G业务(计划任务)_",y1,"_0100.csv",collapse="s",sep="")
+datatoday <-fread(day1,header=T)
+datayestaday <-fread(day2,header=T)
+x1<-datatoday[c(1:1),2] #取文件中第2列第一个
+x1<- round(x1,1) 
+x2<-datatoday[c(1:1),3]
+x2<- round(x2,1)
+x3<-datatoday[c(1:1),4]
+x3<- round(x3,1)
+x4<-datatoday[c(1:1),5]
+x4<- round(x4,1)
+x5<-datatoday[c(1:1),6]
+x5<- round(x5,1)
+x6<-datatoday[c(1:1),8]
+x6<- round(x6,3)
+x7<-datatoday[c(1:1),9]
+x7<- round(x7,3)
+x11<-datayestaday [c(1:1),2]
+x11<- round(x11,1)
+x22<-datayestaday [c(1:1),3]
+x22<- round(x22,1)
+x33<-datayestaday [c(1:1),4]
+x33<- round(x33,1)
+x44<-datayestaday [c(1:1),5]
+x44<- round(x44,1)
+x55<-datayestaday [c(1:1),6]
+x55<- round(x55,1)
+x66<-datayestaday [c(1:1),8]
+x66<- round(x66,3)
+x77<-datayestaday [c(1:1),9]
+x77<- round(x77,3)
+x1x<- x1-x11
+x1x<- round(x1x,3)
+x2x<- x2-x22
+x2x<- round(x2x,3)
+x6x<- x6-x66
+x6x<- round(x6x,3)
+x7x<- x7-x77
+x7x<- round(x7x,3)
+sprintf("监控脚本每日监测，今日4G监控业务面用户量%s万,与昨日相比%s万,流量%sTB,与昨日相比%sTB,上行时延%sms,下行时延%sms,http时延%sms,无响应率%s,比昨日%s,imsi填充率%s,比昨日%s",x1,x1x,x2,x2x,x3,x4,x5,x6,x6x,x7,x7x)
+
+
+
+
+
